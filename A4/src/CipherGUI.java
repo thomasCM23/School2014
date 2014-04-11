@@ -3,31 +3,22 @@
  *Assignment 4
  *Graphical User Interface, encrypt/decrypt text
  */
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
-import java.util.Vector;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -55,7 +46,7 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 	private ButtonGroup rg;
 	private Font f = new Font("Arial", Font.PLAIN, 12);
 	private Font f2 = new Font("Serif", Font.PLAIN, 12);
-	
+	private JCheckBox numEn;
 	
 	private String encryptSelect = "Encrypt rot5";
 	
@@ -64,6 +55,7 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 		super("Rot-n Encryption/Decryption");
 		setSize(500, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		items[0]="Encrypt rot5";
 		items[1]="Encrypt rot7";
 		items[2]="Encrypt rot13";
@@ -98,6 +90,7 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 		rg = new ButtonGroup();
 		rg.add(encrypt);
 		rg.add(decrypt);
+		numEn = new JCheckBox("Encrypt/Decrypt numbers");
 		encrypt.setSelected(true);
 	
 		list.addItemListener(this);
@@ -106,25 +99,50 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 		write.addActionListener(		//action listener that read input and converts text in different rot number
 				new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
-						if(encrypt.isSelected()){
-							if(encryptSelect.equals(items[0]))
-								translated.setText(en.rot(5, input.getText()));
-							else if(encryptSelect.equals(items[1]))
-								translated.setText(en.rot(7, input.getText()));
-							else if(encryptSelect.equals(items[2]))
-								translated.setText(en.rot(13, input.getText()));
-							else if(encryptSelect.equals(items[3]))
-								translated.setText(en.rot(17, input.getText()));
+						if(numEn.isSelected()){
+							if(encrypt.isSelected()){
+								if(encryptSelect.equals(items[0]))
+									translated.setText(en.rotNum(5, input.getText()));
+								else if(encryptSelect.equals(items[1]))
+									translated.setText(en.rotNum(7, input.getText()));
+								else if(encryptSelect.equals(items[2]))
+									translated.setText(en.rotNum(13, input.getText()));
+								else if(encryptSelect.equals(items[3]))
+									translated.setText(en.rotNum(17, input.getText()));
+							}
+							else{
+								if(encryptSelect.equals(items[0]))
+									translated.setText(de.rotNum(5, input.getText()));
+								else if(encryptSelect.equals(items[1]))
+									translated.setText(de.rotNum(7, input.getText()));
+								else if(encryptSelect.equals(items[2]))
+									translated.setText(de.rotNum(13, input.getText()));
+								else if(encryptSelect.equals(items[3]))
+									translated.setText(de.rotNum(17, input.getText()));
+							}
 						}
-						else{
-							if(encryptSelect.equals(items[0]))
-								translated.setText(de.rot(5, input.getText()));
-							else if(encryptSelect.equals(items[1]))
-								translated.setText(de.rot(7, input.getText()));
-							else if(encryptSelect.equals(items[2]))
-								translated.setText(de.rot(13, write.getText()));
-							else if(encryptSelect.equals(items[3]))
-								translated.setText(de.rot(17, write.getText()));
+						else if(!(numEn.isSelected())){
+							if(encrypt.isSelected()){
+								if(encryptSelect.equals(items[0]))
+									translated.setText(en.rot(5, input.getText()));
+								else if(encryptSelect.equals(items[1]))
+									translated.setText(en.rot(7, input.getText()));
+								else if(encryptSelect.equals(items[2]))
+									translated.setText(en.rot(13, input.getText()));
+								else if(encryptSelect.equals(items[3]))
+									translated.setText(en.rot(17, input.getText()));
+							}
+							else{
+								if(encryptSelect.equals(items[0]))
+									translated.setText(de.rot(5, input.getText()));
+								else if(encryptSelect.equals(items[1]))
+									translated.setText(de.rot(7, input.getText()));
+								else if(encryptSelect.equals(items[2]))
+									translated.setText(de.rot(13, input.getText()));
+								else if(encryptSelect.equals(items[3]))
+									translated.setText(de.rot(17, input.getText()));
+							}
+							
 						}
 						
 					}
@@ -138,6 +156,7 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 					translated.setText("");
 		}});
 		//Adds elements to JPanel
+		
 		myPanel.add(encrypt);
 		myPanel.add(decrypt);
 		myPanel.add(Box.createRigidArea(new Dimension(0,5)));
@@ -147,6 +166,7 @@ public class CipherGUI extends JFrame implements ActionListener,ItemListener {
 		myPanel.add(translated);
 		myPanel.add(write);
 		myPanel.add(clear);
+		myPanel.add(numEn);
 		//Adds JPanel to JFrame
 		add(myPanel);
 	}

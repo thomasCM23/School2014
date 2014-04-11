@@ -12,14 +12,43 @@ public class Decrypt {
 	public String rot(int rotNum, String read){
 		read.toLowerCase();
 		ascii = read.toCharArray();
-		System.out.println(ascii.length);
 		for(int i=0; i< ascii.length; i++){
 			int dAscii = ascii[i];
-			if(dAscii>= 32 && dAscii <= 64 || dAscii >= 91 && dAscii <= 96 || dAscii >= 123 && dAscii <= 127 ){
+			if(dAscii>= 32 && dAscii <= 64 || dAscii >= 91 && dAscii <= 96 || dAscii >= 123 && dAscii <= 127 || ascii[i] == '\n' ){
 				ascii[i]= ascii[i];
 			}
 			else if(dAscii-rotNum < 97){
-				dAscii = dAscii-rotNum + 122 -96;
+				dAscii = dAscii-rotNum + 123 -97;
+				ascii[i] =(char)(dAscii);
+			}
+			else{
+				ascii[i] = (char)(ascii[i]-rotNum);
+			}
+		}
+		encrypted = new String(ascii);
+		return encrypted;
+		
+	}
+	
+	public String rotNum(int rotNum, String read){
+		read.toLowerCase();
+		ascii = read.toCharArray();
+		for(int i=0; i< ascii.length; i++){
+			int dAscii = ascii[i];
+			if(dAscii>= 32 && dAscii <= 64 || dAscii >= 91 && dAscii <= 96 || dAscii >= 123 && dAscii <= 127 || ascii[i] == '\n' ){
+				if(dAscii> 47 && dAscii < 58){
+					if(dAscii - rotNum <= 47){
+						dAscii = dAscii-rotNum+57-47;
+						ascii[i] = (char)(dAscii);
+					}
+					else{
+						ascii[i] = (char)(ascii[i]-rotNum);
+					}
+				}
+				ascii[i]= ascii[i];
+			}
+			else if(dAscii-rotNum < 97){
+				dAscii = dAscii-rotNum + 123 -97;
 				ascii[i] =(char)(dAscii);
 			}
 			else{
